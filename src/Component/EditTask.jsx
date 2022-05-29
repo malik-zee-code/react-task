@@ -17,7 +17,6 @@ const EditTask = (props) => {
   const [time, setTime] = useState(new Date());
   const [assignUser, setassignUser] = useState("");
   const dispatch = useDispatch();
-  const [deleted, setisDeleted] = useState(false);
 
   const convertintoSeconds = (hour, mins) => {
     let converHintoSec = +hour * 60 * 60;
@@ -28,7 +27,6 @@ const EditTask = (props) => {
 
   const DeleteHandler = () => {
     dispatch(actionCreators.DeleteTask(props.m.id, user));
-    setisDeleted(true);
   };
   const handleSubmit = (e) => {
     e.preventDefault();

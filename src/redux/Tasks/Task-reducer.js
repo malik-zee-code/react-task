@@ -1,6 +1,7 @@
 const initialState = {
-  tasks: {},
+  tasks: [],
   showSingle: {},
+  toggle: false,
 };
 
 export const taskReducer = (state = initialState, action) => {
@@ -16,6 +17,9 @@ export const taskReducer = (state = initialState, action) => {
         ...state,
         showSingle: action.payload,
       };
+
+    case "TOGGLE":
+      return { ...state, toggle: !state.toggle };
 
     default:
       return state;

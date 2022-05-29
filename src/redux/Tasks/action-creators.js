@@ -24,11 +24,16 @@ export const AddTask = (data, user) => {
     task_msg: data.desc,
   };
 
-  axios.post(
-    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${user.company_id}`,
-    body,
-    config
-  );
+  console.log(body);
+
+  axios
+    .post(
+      `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${user.company_id}`,
+      body,
+      config
+    )
+    .then((d) => console.log("TASK ADDED:", d))
+    .catch((err) => console.log(err));
 };
 
 // ---------------------- EDIT TASK --------------------------------
@@ -40,32 +45,38 @@ export const EditTask = (data, user) => {
     },
   };
   const body = {
-    assigned_user: data.assigned_user,
-    task_date: data.taskdate,
-    task_time: data.task_time,
+    assigned_user: data.assignUser,
+    task_date: data.date,
+    task_time: data.time,
     is_completed: 0,
     time_zone: timezone_offset_in_seconds(new Date()),
-    task_msg: data.task_desc,
+    task_msg: data.desc,
   };
 
-  axios.put(
-    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/${data.taskId}?company_id=${user.company_id}`,
-    body,
-    config
-  );
+  axios
+    .put(
+      `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/${data.taskId}?company_id=${user.company_id}`,
+      body,
+      config
+    )
+    .then(() => console.log("updated"))
+    .catch((err) => console.log(err));
 };
 
 // ---------------------- DELETE TASK --------------------------------
-export const DeleteTask = (task, user) => {
+export const DeleteTask = (taskid, user) => {
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
-  axios.delete(
-    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/<task_id>?company_id=${user.company_id}`,
-    config
-  );
+  axios
+    .delete(
+      `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/${taskid}?company_id=${user.company_id}`,
+      config
+    )
+    .then(() => console.log("DELETED"))
+    .catch((err) => console.log(err));
 };
 
 // ======================================= ACTION CREATORS =================================
@@ -79,28 +90,35 @@ export const getAlltask = (user) => {
     },
   };
   const rec = axios.get(
-    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${user.companyid}`,
+    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${user.company_id}`,
     config
   );
   return (dispatch) => {
-    rec.then((d) => dispatch({ type: "GET_ALL_TASK", paylaod: d }));
+    rec
+      .then((d) => dispatch({ type: "GET_ALL_TASK", payload: d.data.results }))
+      .then((d) => console.log(d))
+      .catch((err) => console.log(err));
   };
 };
 
 // ---------------------------- GET SINGLE TASK ------------------------------
 
-export const GetSingleTask = (task, user) => {
+export const GetSingleTask = (taskid, user) => {
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
     },
   };
   const rec = axios.get(
-    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/<task_id_from_previous_test>?company_id=${user.companyid}`,
+    `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691/${taskid}?company_id=${user.company_id}`,
     config
   );
 
   return (dispatch) => {
-    rec.then((d) => dispatch({ type: "GET_SINGLE_TASK", payload: d }));
+    rec
+      .then((d) =>
+        dispatch({ type: "GET_SINGLE_TASK", payload: d.data.results })
+      )
+      .catch((err) => console.log(err));
   };
 };

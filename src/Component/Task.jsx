@@ -13,6 +13,7 @@ const Task = () => {
   const user = useSelector((state) => state.user.user);
   const Users = useSelector((state) => state.user.allusers);
   const toggle = useSelector((state) => state.taskReducer.toggle);
+  const allTasks = useSelector((state) => state.taskReducer.tasks);
 
   const [desc, setDesc] = useState("");
   const [date, setDate] = useState();
@@ -56,7 +57,7 @@ const Task = () => {
     >
       <div className=" p-4 bg-slate-50 border-2 rounded-md h-full w-full  text-slate-400 font-medium flex justify-between border-b-2 ">
         {" "}
-        <span> TASKS 0 </span>{" "}
+        <span> TASKS {allTasks.length} </span>{" "}
         <span className=" h-full pl-5 ">
           {" "}
           <FontAwesomeIcon

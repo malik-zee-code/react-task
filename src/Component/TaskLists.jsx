@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../redux/Tasks/actions";
 import ListItem from "./ListItem";
@@ -9,9 +9,13 @@ const TaskLists = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const getAlltask = useCallback(() => {
     dispatch(actionCreators.getAlltask(user));
-  });
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    getAlltask();
+  }, [getAlltask]);
 
   return (
     <>
